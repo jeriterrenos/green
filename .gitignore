@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+# Dados reais (nomes, CPFs, telefones) — nunca versionar
+dados antigos/
+public/dados-locais/
+*.gpkg
+logo/
+__pycache__/
+*.pyc
