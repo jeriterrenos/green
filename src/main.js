@@ -95,8 +95,6 @@ async function iniciar() {
   ]).catch(() => {});
   await Promise.race([Promise.all([mapa.pronto, fontes]), new Promise((r) => setTimeout(r, 4000))]);
   mostrarPagina();
-
-  if (fonte !== 'mock') toast('Fonte de dados ainda não implementada; exibindo a demonstração.', 'erro');
 }
 
 /** Remove a tela de carregamento (com um pequeno esmaecimento) e exibe a página já montada. */
