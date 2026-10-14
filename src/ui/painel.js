@@ -139,7 +139,7 @@ function secaoDados(lote) {
             <h3>${icone('account_balance')}Trâmite Municipal (SEFIN Cruz)</h3>
             <dl>
               ${linha('Inscrição / BCI', bciBadge, true)}
-              ${lote.protocolo_prefeitura ? linha('Protocolo / Requisição', lote.protocolo_prefeitura) : ''}
+              ${lote.numero_requisicao || lote.protocolo_prefeitura ? linha('Requisição / Protocolo', lote.numero_requisicao || lote.protocolo_prefeitura) : ''}
               ${lote.atendente_prefeitura ? linha('Atendente', lote.atendente_prefeitura) : ''}
               ${itbiStatusBadge ? linha('Situação do ITBI', itbiStatusBadge, true) : ''}
               ${lote.data_itbi ? linha('Data do ITBI', data(lote.data_itbi)) : ''}

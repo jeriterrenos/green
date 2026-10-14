@@ -99,7 +99,8 @@ export async function listarLotes() {
         adquirente_email: adquirentes[0]?.email ?? null,
         adquirente_endereco: adquirentes[0]?.endereco ?? null,
         bci_inscricao: r.bci_inscricao,
-        protocolo_prefeitura: r.protocolo_prefeitura,
+        numero_requisicao: r.numero_requisicao ?? r.protocolo_prefeitura,
+        protocolo_prefeitura: r.protocolo_prefeitura ?? r.numero_requisicao,
         atendente_prefeitura: r.atendente_prefeitura,
         status_geral: r.status_geral,
         status_bci: r.status_bci,
@@ -163,7 +164,8 @@ export async function obterLote(id) {
     adquirente_email: adquirentes[0]?.email ?? null,
     adquirente_endereco: adquirentes[0]?.endereco ?? null,
     bci_inscricao: r.bci_inscricao,
-    protocolo_prefeitura: r.protocolo_prefeitura,
+    numero_requisicao: r.numero_requisicao ?? r.protocolo_prefeitura,
+    protocolo_prefeitura: r.protocolo_prefeitura ?? r.numero_requisicao,
     atendente_prefeitura: r.atendente_prefeitura,
     status_geral: r.status_geral,
     status_bci: r.status_bci,
@@ -216,13 +218,17 @@ export async function desfazerUltimaEtapa(id, motivo) {
   if (error) throw error;
 }
 
-export async function atualizarLote(id, { adquirentes, bci_inscricao, data_ultimo_contato, observacoes, protocolo_prefeitura, atendente_prefeitura }) {
+export async function atualizarLote(id, { adquirentes, bci_inscricao, data_ultimo_contato, observacoes, numero_requisicao, protocolo_prefeitura, atendente_prefeitura }) {
   // 1. Atualizar campos do lote
   const campos = {};
   if (bci_inscricao !== undefined) campos.bci_inscricao = bci_inscricao || null;
   if (data_ultimo_contato !== undefined) campos.data_ultimo_contato = data_ultimo_contato || null;
   if (observacoes !== undefined) campos.observacoes = observacoes || null;
-  if (protocolo_prefeitura !== undefined) campos.protocolo_prefeitura = protocolo_prefeitura || null;
+  const reqVal = numero_requisicao !== undefined ? numero_requisicao : protocolo_prefeitura;
+  if (reqVal !== undefined) {
+    campos.numero_requisicao = reqVal || null;
+    campos.protocolo_prefeitura = reqVal || null;
+  }
   if (atendente_prefeitura !== undefined) campos.atendente_prefeitura = atendente_prefeitura || null;
 
   if (Object.keys(campos).length > 0) {

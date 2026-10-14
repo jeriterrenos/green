@@ -87,6 +87,7 @@ create table if not exists lotes (
   area_projeto_m2     numeric(10,2),
   dif_area_m2         numeric(10,2),
   bci_inscricao       text,
+  numero_requisicao   text,
   protocolo_prefeitura text,
   atendente_prefeitura text,
   status_geral        text,
@@ -378,6 +379,7 @@ delete from lotes;
         area_projeto_m2 = row["area_projeto_m2"] if pd.notna(row["area_projeto_m2"]) else "NULL"
         dif_area_m2 = row["dif_area_m2"] if pd.notna(row["dif_area_m2"]) else "NULL"
         bci = escape_sql(row["bci_inscricao"])
+        numero_req = escape_sql(row.get("numero_requisicao")) if pd.notna(row.get("numero_requisicao")) else escape_sql(row.get("protocolo_prefeitura"))
         protocolo = escape_sql(row["protocolo_prefeitura"])
         atendente = escape_sql(row["atendente_prefeitura"])
         status_geral = escape_sql(row["status_geral"])
@@ -392,11 +394,11 @@ delete from lotes;
         wkt = geom.wkt
 
         sql_lote = f"""insert into lotes (id, codigo, quadra, matricula, matricula_mae, gleba, cartorio,
-  area_m2, perimetro_m, area_projeto_m2, dif_area_m2, bci_inscricao, protocolo_prefeitura, atendente_prefeitura,
+  area_m2, perimetro_m, area_projeto_m2, dif_area_m2, bci_inscricao, numero_requisicao, protocolo_prefeitura, atendente_prefeitura,
   status_geral, status_bci, status_itbi, data_compra, data_itbi, data_ultimo_contato, observacoes, geom)
 overriding system value values (
   {_id}, {codigo}, {quadra}, {matricula}, {matricula_mae}, {gleba}, {cartorio},
-  {area_m2}, {perimetro_m}, {area_projeto_m2}, {dif_area_m2}, {bci}, {protocolo}, {atendente},
+  {area_m2}, {perimetro_m}, {area_projeto_m2}, {dif_area_m2}, {bci}, {numero_req}, {protocolo}, {atendente},
   {status_geral}, {status_bci}, {status_itbi}, {data_compra}, {data_itbi}, {data_contato}, {observacoes},
   ST_Multi(ST_GeomFromText('{wkt}', 4326))
 );"""

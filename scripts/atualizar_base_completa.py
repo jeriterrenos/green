@@ -130,48 +130,233 @@ def executar():
         if comprador and "Marise Xavier" in comprador:
             telefone = None
 
-        # 3. Lotes específicos auditados
-        if codigo == "A5":
-            comprador = "Daniel de Vasconcelos Teixeira"
-            matricula = "2001"
-            bci = "9703"
-            protocolo = "Req #2340 / #1722"
-            atendente = "Luciano Glaysson / Carlos Eduardo"
-            status_bci = "Cadastrado / BCI Emitido"
-            status_itbi = "DAM ITBI Emitido"
-            status_geral = "ITBI em Andamento"
-            etapa = 2
-        elif codigo == "A6":
-            comprador = "Daniel de Vasconcelos Teixeira"
-            matricula = "2002"
-            bci = "9611"
-            protocolo = "Req #1698"
-            atendente = "Carlos Eduardo Vasconcelos Sousa"
-            status_bci = "Cadastrado / BCI Emitido"
-            status_itbi = "Em Análise"
-            status_geral = "ITBI em Andamento"
-            etapa = 2
-        elif codigo == "E7":
-            comprador = "Jordão Trindade Santana"
-            matricula = "1658"
-            bci = "9610"
-            protocolo = "Req #2445 / #2078"
-            atendente = "Luciano Glaysson / Carlos Eduardo"
-            status_bci = "Cadastrado / BCI Emitido"
-            status_itbi = "Quitado / Pago"
-            status_geral = "ITBI Quitado - Pronto p/ Registro"
-            etapa = 4
-            data_itbi = "2025-10-03"
-        elif codigo == "F6":
-            comprador = None
-            matricula = "1817"
-            bci = "9706"
-            protocolo = "Req #1725"
-            atendente = "Carlos Eduardo Vasconcelos Sousa"
-            status_bci = "Cadastrado / BCI Emitido"
-            status_itbi = "Não aplicável (Disponível)"
-            status_geral = "Disponível"
-            etapa = 0
+        # Mapeamento oficial e auditado dos requerimentos da Prefeitura de Cruz / SEFIN
+        MAPA_REQS = {
+            "C9 - C10": {
+                "numero_requisicao": "Req #5176",
+                "protocolo_prefeitura": "Req #5176",
+                "atendente_prefeitura": "Luciano Glaysson Carvalho",
+                "status_bci": "BCI Disponível p/ Retirada",
+                "status_itbi": "Pendente",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "A1 - A2 - A3 - A4": {
+                "numero_requisicao": "Req #3532, #5177",
+                "protocolo_prefeitura": "Req #3532, #5177",
+                "atendente_prefeitura": "Luciano Glaysson Carvalho / Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastro Deferido / DAM Emitido",
+                "status_itbi": "Em Análise (Coproprietário)",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "E13": {
+                "numero_requisicao": "Req #1729, #2053",
+                "protocolo_prefeitura": "Req #1729, #2053",
+                "bci_inscricao": "9724",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_itbi": "Pendente",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "A5": {
+                "comprador": "Daniel de Vasconcelos Teixeira",
+                "matricula": "2001",
+                "bci_inscricao": "9703",
+                "numero_requisicao": "Req #2340, #1722",
+                "protocolo_prefeitura": "Req #2340, #1722",
+                "atendente_prefeitura": "Luciano Glaysson / Carlos Eduardo",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_itbi": "DAM ITBI Emitido",
+                "status_geral": "ITBI em Andamento",
+                "etapa": 2,
+            },
+            "A6": {
+                "comprador": "Daniel de Vasconcelos Teixeira",
+                "matricula": "2002",
+                "bci_inscricao": "9611",
+                "numero_requisicao": "Req #1698",
+                "protocolo_prefeitura": "Req #1698",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_itbi": "Em Análise",
+                "status_geral": "ITBI em Andamento",
+                "etapa": 2,
+            },
+            "E7": {
+                "comprador": "Jordão Trindade Santana",
+                "matricula": "1658",
+                "bci_inscricao": "9610",
+                "numero_requisicao": "Req #2445, #2078",
+                "protocolo_prefeitura": "Req #2445, #2078",
+                "atendente_prefeitura": "Luciano Glaysson / Carlos Eduardo",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_itbi": "Quitado / Pago",
+                "status_geral": "ITBI Quitado - Pronto p/ Registro",
+                "etapa": 4,
+                "data_itbi": "2025-10-03",
+            },
+            "E8": {
+                "numero_requisicao": "Req #2070",
+                "protocolo_prefeitura": "Req #2070",
+                "bci_inscricao": "9770",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "D7": {
+                "numero_requisicao": "Req #2069",
+                "protocolo_prefeitura": "Req #2069",
+                "bci_inscricao": "9768",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "C4": {
+                "numero_requisicao": "Req #2067",
+                "protocolo_prefeitura": "Req #2067",
+                "bci_inscricao": "9769",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "B17 - B20": {
+                "numero_requisicao": "Req #2066",
+                "protocolo_prefeitura": "Req #2066",
+                "bci_inscricao": "9746",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "B16": {
+                "numero_requisicao": "Req #2065",
+                "protocolo_prefeitura": "Req #2065",
+                "bci_inscricao": "9745",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "B15": {
+                "numero_requisicao": "Req #2064",
+                "protocolo_prefeitura": "Req #2064",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastro Concluído na SEFIN",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "B14": {
+                "numero_requisicao": "Req #2063",
+                "protocolo_prefeitura": "Req #2063",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastro Concluído na SEFIN",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "B11 - B12": {
+                "numero_requisicao": "Req #2062",
+                "protocolo_prefeitura": "Req #2062",
+                "bci_inscricao": "9730",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "F1": {
+                "numero_requisicao": "Req #1728",
+                "protocolo_prefeitura": "Req #1728",
+                "bci_inscricao": "9709",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "F4": {
+                "numero_requisicao": "Req #1727",
+                "protocolo_prefeitura": "Req #1727",
+                "bci_inscricao": "9708",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "F5": {
+                "numero_requisicao": "Req #1726",
+                "protocolo_prefeitura": "Req #1726",
+                "bci_inscricao": "9707",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "F6": {
+                "comprador": None,
+                "matricula": "1817",
+                "bci_inscricao": "9706",
+                "numero_requisicao": "Req #1725",
+                "protocolo_prefeitura": "Req #1725",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_itbi": "Não aplicável (Disponível)",
+                "status_geral": "Disponível",
+                "etapa": 0,
+            },
+            "A8": {
+                "numero_requisicao": "Req #1724",
+                "protocolo_prefeitura": "Req #1724",
+                "bci_inscricao": "9705",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastrado / BCI Emitido",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "A7": {
+                "numero_requisicao": "Req #1723",
+                "protocolo_prefeitura": "Req #1723",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastro Concluído na SEFIN",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+            "A19 - A20": {
+                "numero_requisicao": "Req #1721",
+                "protocolo_prefeitura": "Req #1721",
+                "atendente_prefeitura": "Carlos Eduardo Vasconcelos Sousa",
+                "status_bci": "Cadastro Concluído na SEFIN",
+                "status_geral": "BCI Cadastrado na Prefeitura",
+                "etapa": 1,
+            },
+        }
+
+        numero_requisicao = None
+
+        # Se o lote tem dados nos requerimentos auditados:
+        if codigo in MAPA_REQS:
+            cfg = MAPA_REQS[codigo]
+            if "comprador" in cfg:
+                comprador = cfg["comprador"]
+            if "matricula" in cfg:
+                matricula = cfg["matricula"]
+            if "bci_inscricao" in cfg:
+                bci = cfg["bci_inscricao"]
+            numero_requisicao = cfg.get("numero_requisicao")
+            protocolo = cfg.get("protocolo_prefeitura")
+            atendente = cfg.get("atendente_prefeitura")
+            if "status_bci" in cfg:
+                status_bci = cfg["status_bci"]
+            if "status_itbi" in cfg:
+                status_itbi = cfg["status_itbi"]
+            if "status_geral" in cfg:
+                status_geral = cfg["status_geral"]
+            if "etapa" in cfg:
+                etapa = cfg["etapa"]
+            if "data_itbi" in cfg:
+                data_itbi = cfg["data_itbi"]
 
         # 4. "Não quero dados em observação" -> estritamente None
         observacoes = None
@@ -195,6 +380,7 @@ def executar():
         gdf.at[idx, "bci_inscricao"] = bci
         gdf.at[idx, "BCI"] = bci
         gdf.at[idx, "etapa"] = etapa
+        gdf.at[idx, "numero_requisicao"] = numero_requisicao
         gdf.at[idx, "protocolo_prefeitura"] = protocolo
         gdf.at[idx, "atendente_prefeitura"] = atendente
         gdf.at[idx, "status_geral"] = status_geral
@@ -280,7 +466,7 @@ def executar():
             "data_ultimo_contato": str(row["data_ultimo_contato"]) if (vendido and pd.notna(row["data_ultimo_contato"])) else None,
             "observacoes": None,  # ESTREITAMENTE LIMPO: SEM DADOS EM OBSERVAÇÃO
             "etapa": max(int(row["etapa"] or 0), 0),
-            "nao_aplica": nao_aplica,
+            "numero_requisicao": str(row["numero_requisicao"]) if pd.notna(row.get("numero_requisicao")) and row.get("numero_requisicao") is not None else (str(row["protocolo_prefeitura"]) if pd.notna(row.get("protocolo_prefeitura")) else None),
             "protocolo_prefeitura": str(row["protocolo_prefeitura"]) if pd.notna(row["protocolo_prefeitura"]) else None,
             "atendente_prefeitura": str(row["atendente_prefeitura"]) if pd.notna(row["atendente_prefeitura"]) else None,
             "status_geral": str(row["status_geral"]) if pd.notna(row["status_geral"]) else None,

@@ -191,6 +191,8 @@ export function editar(lote) {
       <fieldset class="grupo"><legend>Prefeitura e acompanhamento</legend>
         <div class="grade-campos">
           ${campoTexto('bci_inscricao', 'BCI / inscrição imobiliária', lote.bci_inscricao)}
+          ${campoTexto('numero_requisicao', 'Nº da Requisição / Protocolo', lote.numero_requisicao ?? lote.protocolo_prefeitura)}
+          ${campoTexto('atendente_prefeitura', 'Atendente na Prefeitura', lote.atendente_prefeitura)}
           ${campoData('data_ultimo_contato', 'Data do último contato', lote.data_ultimo_contato, false)}
           <div class="campo-largo">${campoTexto('observacoes', 'Observações', lote.observacoes, { area: true })}</div>
         </div>
@@ -208,6 +210,9 @@ export function editar(lote) {
             dados.atualizarLote(lote.id, {
               adquirentes,
               bci_inscricao: ctx.valor('bci_inscricao'),
+              numero_requisicao: ctx.valor('numero_requisicao'),
+              protocolo_prefeitura: ctx.valor('numero_requisicao'),
+              atendente_prefeitura: ctx.valor('atendente_prefeitura'),
               data_ultimo_contato: ctx.valor('data_ultimo_contato'),
               observacoes: ctx.valor('observacoes'),
             }),

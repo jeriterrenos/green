@@ -33,7 +33,7 @@ export const CAMPOS_ADQUIRENTE = [
 ];
 export const ESTADOS_COM_CONJUGE = ['casado', 'uniao_estavel'];
 export const MAX_ADQUIRENTES = 2;
-const CAMPOS_LOTE = ['bci_inscricao', 'data_ultimo_contato', 'observacoes', 'protocolo_prefeitura', 'atendente_prefeitura'];
+const CAMPOS_LOTE = ['bci_inscricao', 'data_ultimo_contato', 'observacoes', 'numero_requisicao', 'protocolo_prefeitura', 'atendente_prefeitura'];
 
 export const exigeLogin = false;
 
@@ -154,7 +154,8 @@ function montarPropriedades(id) {
     adquirente_email: adquirentes[0]?.email ?? null,
     adquirente_endereco: adquirentes[0]?.endereco ?? null,
     bci_inscricao: lote.bci_inscricao,
-    protocolo_prefeitura: lote.protocolo_prefeitura ?? null,
+    numero_requisicao: lote.numero_requisicao ?? lote.protocolo_prefeitura ?? null,
+    protocolo_prefeitura: lote.protocolo_prefeitura ?? lote.numero_requisicao ?? null,
     atendente_prefeitura: lote.atendente_prefeitura ?? null,
     status_geral: lote.status_geral ?? null,
     status_bci: lote.status_bci ?? null,
