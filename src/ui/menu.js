@@ -11,7 +11,7 @@ export function iniciarMenu(raiz, { demo }) {
     </button>
     <div class="menu-lista" role="menu" hidden>
       <p class="menu-perfil">${icone('person')}<span>${esc(p?.nome)}<small>${p?.papel === 'admin' ? 'Administrador' : 'Leitor'}</small></span></p>
-      ${demo ? `<button type="button" role="menuitem" data-acao="restaurar">${icone('restart_alt')}Restaurar dados de demonstração</button>` : ''}
+      ${demo ? `<button type="button" role="menuitem" data-acao="restaurar">${icone('restart_alt')}Restaurar dados de demonstração</button>` : `<button type="button" role="menuitem" data-acao="sair">${icone('logout')}Sair da conta</button>`}
       <div class="menu-precision">Um produto <img src="${import.meta.env.BASE_URL}img/precision-plus.png" alt="Precision+"></div>
     </div>`;
   const botao = raiz.querySelector('.menu-botao');
@@ -24,10 +24,15 @@ export function iniciarMenu(raiz, { demo }) {
   document.addEventListener('click', (e) => {
     if (!raiz.contains(e.target)) alternar(false);
   });
-  lista.addEventListener('click', (e) => {
+  lista.addEventListener('click', async (e) => {
     const b = e.target.closest('[data-acao]');
     if (!b) return;
     alternar(false);
     if (b.dataset.acao === 'restaurar') restaurarDemo();
+    if (b.dataset.acao === 'sair') {
+      const { dados } = await import('../data/index.js');
+      if (dados.logout) await dados.logout();
+      window.location.reload();
+    }
   });
 }

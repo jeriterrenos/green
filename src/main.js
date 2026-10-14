@@ -19,7 +19,13 @@ async function iniciar() {
   const demo = !dados.exigeLogin;
   $('ano').textContent = new Date().getFullYear();
 
-  const sessao = await dados.sessaoAtual(); // F5: sem sessão → tela de login
+  const sessao = await dados.sessaoAtual();
+  if (dados.exigeLogin && !sessao.usuario) {
+    mostrarPagina();
+    const { exibirTelaLogin } = await import('./ui/login.js');
+    exibirTelaLogin({ aoLogar: () => window.location.reload() });
+    return;
+  }
   atualizar({ perfil: sessao.perfil, etapas: await dados.listarEtapas() });
 
   // Layout: desktop (painel lateral + fluxo horizontal) × celular (gaveta + fluxo vertical)

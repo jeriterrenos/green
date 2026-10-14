@@ -262,6 +262,10 @@ drop policy if exists admin_edita_adquirentes on adquirentes;
 create policy admin_edita_adquirentes on adquirentes for all to authenticated
   using (is_admin()) with check (is_admin());
 
+grant usage on schema public to anon, authenticated, service_role;
+grant all on all tables in schema public to postgres, anon, authenticated, service_role;
+grant all on all sequences in schema public to postgres, anon, authenticated, service_role;
+grant all on all routines in schema public to postgres, anon, authenticated, service_role;
 grant execute on function iniciar_processo, concluir_etapa, desfazer_ultima_etapa to authenticated;
 
 -- 8. SEED DAS 9 ETAPAS
