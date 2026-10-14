@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR" class="carregando">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1F6B2E" />
+    <meta name="description" content="Gerenciamento de transferência de matrículas do loteamento Green Terrenos (Cruz/CE)." />
+    <title>Green Terrenos · Transferência de Matrículas</title>
+    <link rel="icon" type="image/png" href="/green/img/folha.png" />
+    <link rel="apple-touch-icon" href="/green/img/icone-192.png" />
+    <link rel="manifest" href="/green/manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,400,0..1,0&display=block"
+      rel="stylesheet"
+    />
+    <style>
+      /* Tela de carregamento: a página só aparece quando estiver montada (sem "construção" visível) */
+      html, body { margin: 0; background: #f6f8f4; }
+      .carregando .app { visibility: hidden; }
+      .abertura { position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; align-items: center;
+        justify-content: center; gap: 18px; background: #f6f8f4; transition: opacity .3s ease; }
+      .abertura img { width: 120px; height: auto; }
+      .abertura span { width: 36px; height: 36px; border-radius: 50%; border: 4px solid #d9e7c4;
+        border-top-color: #1f6b2e; animation: girar 0.9s linear infinite; }
+      .pronto .abertura { opacity: 0; pointer-events: none; }
+      @keyframes girar { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) { .abertura span { animation: none; } }
+      /* CSS crítico: evita que as logos apareçam no tamanho original antes do CSS principal carregar */
+      .logo-completo { height: 56px; width: auto; }
+      .logo-folha { display: none; height: 36px; width: 36px; }
+      .rodape img, .rodape-gaveta img, .menu-precision img { height: 44px; width: auto; }
+      @media (max-width: 1023.98px) {
+        .logo-completo { display: none; }
+        .logo-folha { display: block; }
+      }
+    </style>
+    <script type="module" crossorigin src="/green/assets/index-BDifNr0v.js"></script>
+    <link rel="modulepreload" crossorigin href="/green/assets/maplibre-wqmL2Hxp.js">
+    <link rel="stylesheet" crossorigin href="/green/assets/index-BgFXf_ZT.css">
+  </head>
+  <body>
+    <div class="abertura" aria-live="polite" aria-label="Carregando">
+      <img src="/green/img/logo-green-terrenos.png" alt="Green Terrenos" width="120" height="114" />
+      <span aria-hidden="true"></span>
+    </div>
+    <div class="app">
+      <header class="cabecalho">
+        <img class="logo-completo" src="/green/img/logo-green-terrenos.png" alt="Green Terrenos" width="59" height="56" />
+        <img class="logo-folha" src="/green/img/folha.png" alt="Green Terrenos" width="36" height="36" />
+        <div class="titulo">
+          <h1>
+            <span class="titulo-longo">Gerenciamento de Transferência de Matrículas</span>
+            <span class="titulo-curto">Transf. de Matrículas</span>
+          </h1>
+          <p class="subtitulo">Loteamento Green Terrenos · Cruz/CE</p>
+        </div>
+        <div id="busca" class="busca"></div>
+        <button id="btn-busca-movel" type="button" class="icone-btn so-movel" aria-label="Buscar">
+          <span class="material-symbols-rounded" aria-hidden="true">search</span>
+        </button>
+        <div id="menu-usuario" class="menu-usuario"></div>
+      </header>
+
+      <nav id="kpis" class="kpis" aria-label="Situação dos lotes"></nav>
+
+      <main class="principal">
+        <aside id="painel" class="painel" aria-label="Dados do imóvel">
+          <div id="gaveta-alca" class="gaveta-alca so-movel" aria-hidden="true"><span></span></div>
+          <div id="painel-cabeca" class="painel-cabeca"></div>
+          <div id="abas" class="abas so-movel" role="tablist">
+            <button type="button" role="tab" data-aba="dados" aria-selected="true">Dados</button>
+            <button type="button" role="tab" data-aba="etapas" aria-selected="false">Etapas</button>
+            <button type="button" role="tab" data-aba="historico" aria-selected="false">Histórico</button>
+          </div>
+          <div class="painel-corpo">
+            <div id="aba-dados" class="aba ativa" role="tabpanel"></div>
+            <div id="aba-etapas" class="aba" role="tabpanel"></div>
+            <div id="aba-historico" class="aba" role="tabpanel"></div>
+            <div class="rodape-gaveta so-movel">
+              <span>Um produto <b>Precision+</b></span>
+              <img src="/green/img/precision-plus.png" alt="Logo Precision+" width="62" height="44" />
+            </div>
+          </div>
+        </aside>
+
+        <section class="area-mapa" aria-label="Mapa do loteamento">
+          <div class="mapa-caixa">
+            <div id="mapa"></div>
+            <div id="legenda" class="legenda"></div>
+          </div>
+          <div id="area-etapas-desktop">
+            <div id="bloco-etapas" class="bloco-etapas">
+              <div id="fluxo" class="fluxo"></div>
+              <div id="documentos" class="documentos"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="rodape so-desktop">
+        <span>Um produto <b>Precision+</b></span>
+        <img src="/green/img/precision-plus.png" alt="Logo Precision+" width="62" height="44" />
+        <span>· <span id="ano"></span></span>
+      </footer>
+    </div>
+
+    <div id="modal-raiz"></div>
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+  </body>
+</html>
