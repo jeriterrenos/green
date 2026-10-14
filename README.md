@@ -12,7 +12,8 @@ npm install
 npm run dev
 ```
 
-Abre em **http://localhost:5173/green-terrenos/** (modo demonstração: sem login, perfil admin, dados fictícios).
+Abre em **http://localhost:5173/green/** (modo demonstração: sem login, perfil admin, dados fictícios).
+Publicado em: **https://jeriterrenos.github.io/green/**
 Para testar no celular na mesma rede Wi-Fi: `npm run dev -- --host` e abra o endereço “Network” no aparelho.
 
 | Comando | O que faz |
